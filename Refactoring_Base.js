@@ -1,6 +1,4 @@
 function statement(invoice, plays){
-    let totalAmount = 0;
-    let volumeCredits = 0;
     let result = 'Billing History (Customer Name: ${invoice.customer})\n';
 
     for(let perf of invoice.performances){
@@ -8,13 +6,25 @@ function statement(invoice, plays){
         result += ' ${playFor(perf).name}: ${usd(amountFor(perf))} (${perf.audience}seat)\n';
         totalAmount += amountFor(perf);
     }
-    
-    for(let pref of invoice.performances){
-        volumeCredits += volumeCreditsFor(perf);
-    }
-    result += 'Total Amount: ${usd(totalAmount}\n';
-    result += 'Points Earned: ${volumeCredits}point\n';
+    result += 'Total Amount: ${usd(totalAmount()}\n';
+    result += 'Points Earned: ${totalVolumeCredits()}point\n';
     return result;
+
+    function totalAmount(){
+        let result = 0;
+        for(let perf of invoice.performances){
+            result += amountFor(perf);
+        }
+        return result;
+    }
+
+    function totalVolumeCredits(){
+        let result = 0;
+        for(let perf of invoice.performances){
+            result += volumeCreditsFor(perf);
+        }
+        return result;
+    }
 
     function amountFor(aPerformance){
         let result = 0;
