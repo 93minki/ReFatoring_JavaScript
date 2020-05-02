@@ -6,15 +6,10 @@ function statement(invoice, plays){
 
     for(let perf of invoice.performances){
 
-        let thisAmount = amountFor(perf);
+        volumeCredits += volumeCreditsFor(perf);
 
-        volumeCredits += Math.max(per.audience - 30, 0);
-        if("comedy" === playFor(perf).type){
-            volumeCredits += Math.floor(per.audience / 5);
-        }
-
-        result += ' ${playFor(perf).name}: ${format(thisAmount/100)} (${perf.audience}seat)\n';
-        totalAmount += thisAmount;
+        result += ' ${playFor(perf).name}: ${format(amountFor(perf)/100)} (${perf.audience}seat)\n';
+        totalAmount += amountFor(perf);
     }
     result += 'Total Amount: ${format(totalAmount/100}\n';
     result += 'Points Earned: ${volumeCredits}point\n';
@@ -45,5 +40,14 @@ function statement(invoice, plays){
     
     function playFor(aPerformance){
         return plays[aPerformance.playID];
+    }
+
+    function volumeCreditsFor(aPerformance){
+        let result = 0;
+        result += Math.max(aPerformance.audience - 30, 0);
+        if("comedy" === playFor(aPerformance).type){
+            result += Math.floor(aPerformance.audience / 5);
+        }
+        return result;
     }
 }
