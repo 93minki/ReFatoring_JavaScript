@@ -5,7 +5,7 @@ function statement(invoice, plays){
     const format = new Intl.NumberFormat("en-US",{style: "currency", currency: "USD", minimumFractionDigits: 2}).format;
 
     for(let perf of invoice.performances){
-        const paly = plays[perf.playID];
+        const paly = playFor(perf);
         let thisAmount = amountFor(perf, play);
 
         volumeCredits += Math.max(per.audience - 30, 0);
@@ -41,5 +41,9 @@ function statement(invoice, plays){
                 throw new Error('Unknown Genre : ${play.type}');
         }
         return result;
+    }
+    
+    function playFor(aPerformance){
+        return plays[aPerformance.playID];
     }
 }
