@@ -2,16 +2,17 @@ function statement(invoice, plays){
     let totalAmount = 0;
     let volumeCredits = 0;
     let result = 'Billing History (Customer Name: ${invoice.customer})\n';
-    const format = new Intl.NumberFormat("en-US",{style: "currency", currency: "USD", minimumFractionDigits: 2}).format;
 
     for(let perf of invoice.performances){
 
-        volumeCredits += volumeCreditsFor(perf);
-
-        result += ' ${playFor(perf).name}: ${format(amountFor(perf)/100)} (${perf.audience}seat)\n';
+        result += ' ${playFor(perf).name}: ${usd(amountFor(perf))} (${perf.audience}seat)\n';
         totalAmount += amountFor(perf);
     }
-    result += 'Total Amount: ${format(totalAmount/100}\n';
+    
+    for(let pref of invoice.performances){
+        volumeCredits += volumeCreditsFor(perf);
+    }
+    result += 'Total Amount: ${usd(totalAmount}\n';
     result += 'Points Earned: ${volumeCredits}point\n';
     return result;
 
@@ -49,5 +50,9 @@ function statement(invoice, plays){
             result += Math.floor(aPerformance.audience / 5);
         }
         return result;
+    }
+
+    function usd(aNumber){
+        return new Intl.NumberFormat("en-US",{style: "currency", currency: "USD", minimumFractionDigits: 2}).format(aNumber/100); 
     }
 }
