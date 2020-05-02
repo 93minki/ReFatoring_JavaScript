@@ -5,15 +5,15 @@ function statement(invoice, plays){
     const format = new Intl.NumberFormat("en-US",{style: "currency", currency: "USD", minimumFractionDigits: 2}).format;
 
     for(let perf of invoice.performances){
-        const paly = playFor(perf);
-        let thisAmount = amountFor(perf, play);
+
+        let thisAmount = amountFor(perf, playFor(perf));
 
         volumeCredits += Math.max(per.audience - 30, 0);
-        if("comedy" === play.type){
+        if("comedy" === playFor(perf).type){
             volumeCredits += Math.floor(per.audience / 5);
         }
 
-        result += ' ${play.name}: ${format(thisAmount/100)} (${perf.audience}seat)\n';
+        result += ' ${playFor(perf).name}: ${format(thisAmount/100)} (${perf.audience}seat)\n';
         totalAmount += thisAmount;
     }
     result += 'Total Amount: ${format(totalAmount/100}\n';
